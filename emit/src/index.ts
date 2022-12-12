@@ -5,7 +5,7 @@ import amqp from 'amqplib';
 
 
 const PORT = 3000;
-const AMQP_URL = 'amqps://gluuahtn:nRdjO88xorXpUWBp1dhiNkWmhoCdN38J@moose.rmq.cloudamqp.com/gluuahtn';
+const AMQP_URL = 'Put your own url';
 const QUEUE_NAME = 'test';
 
 const app = express();
