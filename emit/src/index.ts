@@ -1,24 +1,16 @@
-/* eslint-disable padded-blocks */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable space-before-blocks */
-/* eslint-disable semi */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable spaced-comment */
-import dotenv from 'dotenv'
-import bodyParser from 'body-parser'
-import express, { Request, Response } from 'express'
-//import createMQProducer from './producer'
-import amqp from 'amqplib'
 
-dotenv.config()
+import bodyParser from 'body-parser';
+import express, { Request, Response } from 'express';
+import amqp from 'amqplib';
 
-const PORT = 3000
-const AMQP_URL = 'amqps://gluuahtn:nRdjO88xorXpUWBp1dhiNkWmhoCdN38J@moose.rmq.cloudamqp.com/gluuahtn'
-const QUEUE_NAME = 'test'
 
-const app = express()
+const PORT = 3000;
+const AMQP_URL = 'amqps://gluuahtn:nRdjO88xorXpUWBp1dhiNkWmhoCdN38J@moose.rmq.cloudamqp.com/gluuahtn';
+const QUEUE_NAME = 'test';
 
-app.use(bodyParser.json())
+const app = express();
+
+app.use(bodyParser.json());
 
 //initialize connection
 async function connect() {
@@ -33,8 +25,8 @@ async function connect() {
   await channel.assertQueue(QUEUE_NAME);
   
   app.post('/register', (req: Request, res: Response) => {
-    const { email, password } = req.body
-    console.log('Registering user...')
+    const { email, password } = req.body;
+    console.log('Registering user...');
     const msg = {
       action: 'REGISTER',
       data: { email, password },
@@ -42,12 +34,12 @@ async function connect() {
     const event = JSON.stringify(msg);
     channel.sendToQueue(QUEUE_NAME, Buffer.from(event));
   
-    return res.send('OK')
+    return res.send('OK');
   })
   
   app.post('/login', (req: Request, res: Response) => {
-    const { email, password } = req.body
-    console.log('Login user...')
+    const { email, password } = req.body;
+    console.log('Login user...');
     const msg = {
       action: 'LOGIN',
       data: { email, password },
@@ -55,15 +47,15 @@ async function connect() {
     const event = JSON.stringify(msg);
     channel.sendToQueue(QUEUE_NAME, Buffer.from(event));
   
-    return res.send('OK')
+    return res.send('OK');
   })
   
   app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World')
+    res.send('Hello World');
   })
 
   app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`)
+    console.log(`Server is listening on port ${PORT}`);
   })
 }
 
